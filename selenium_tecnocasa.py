@@ -106,146 +106,146 @@ templist = [] # NOTA: CREAMOS LISTA QUE RECOGERA LOS REGISTROS ANTES DE AÑADIRL
 #  2.- BUCLE EXTERNO QUE CONTROLA LA PAGINACION
 
 for i in range (1,max_page_num+1):
-    if i==1:
+    if i<2:
         url = 'https://www.tecnocasa.es/anuncios/piso/andalucia/malaga.html'
 
     else:
         url = "https://www.tecnocasa.es/anuncios/piso/andalucia/malaga.html" +"/"+ "pag-"+ str(i)
 
-        driver.get(url)
+    driver.get(url)
 
-        # EXTRACCION DEL ARBOL HTML DE LOS LINK DE CADA UNA DE LAS PROPIEDADES A LA VENTA.
+    # EXTRACCION DEL ARBOL HTML DE LOS LINK DE CADA UNA DE LAS PROPIEDADES A LA VENTA.
 
-        links_productos = driver.find_elements(By.XPATH, '//a[@class="immobileLink"]')
+    links_productos = driver.find_elements(By.XPATH, '//a[@class="immobileLink"]')
 
-        links_de_la_pagina = []
+    links_de_la_pagina = []
 
-        for a_link in links_productos:
-            links_de_la_pagina.append(a_link.get_attribute("href"))
+    for a_link in links_productos:
+        links_de_la_pagina.append(a_link.get_attribute("href"))
 
 
-        # BUCLE INTERNO PARA EXTRACCION VERTICAL DEL DETALLE DE CADA UNO DE LAS PROPIEDADES
+    # BUCLE INTERNO PARA EXTRACCION VERTICAL DEL DETALLE DE CADA UNO DE LAS PROPIEDADES
 
-        for link in links_de_la_pagina:
-            try:
+    for link in links_de_la_pagina:
+        try:
 
-                # LA EXTRACCION SE EFECTUA VIA RUTA XPATH  DEL CONTENEDOR DIV QUE COMPONE LA FICHA DE LA PROPIEDAD
-                # ALGUNOS ELEMENTOS APARECEN DUPLICADOS, ESTO ES PARA GARANTIZAR LA INTEGRIDAD DE LA INFORMACION.
-                # ESTOS FORMULARIOS LOS COMPLETAN LOS FRANQUICIADOS Y LOS SUBEN A LA PAGINA PRINCIPAL DE LA EMPRESA
-                # POR LO QUE EL FORMATO NO ES UNITARIO Y REQUERIRIA UN PREPROCESADO MAS COMPLEJO QUE EXCEDE LOS
-                # PLANTEAMIENTOS DE ESTA PEC.
-                # SE INCORPORA TODA LA INFORMACION POSIBLE, A FIN DE RECONSTRUIR ALREDEDOR DE UN 5-7 % DE REGISTROS
-                # DEFICIENTES.
+            # LA EXTRACCION SE EFECTUA VIA RUTA XPATH  DEL CONTENEDOR DIV QUE COMPONE LA FICHA DE LA PROPIEDAD
+            # ALGUNOS ELEMENTOS APARECEN DUPLICADOS, ESTO ES PARA GARANTIZAR LA INTEGRIDAD DE LA INFORMACION.
+            # ESTOS FORMULARIOS LOS COMPLETAN LOS FRANQUICIADOS Y LOS SUBEN A LA PAGINA PRINCIPAL DE LA EMPRESA
+            # POR LO QUE EL FORMATO NO ES UNITARIO Y REQUERIRIA UN PREPROCESADO MAS COMPLEJO QUE EXCEDE LOS
+            # PLANTEAMIENTOS DE ESTA PEC.
+            # SE INCORPORA TODA LA INFORMACION POSIBLE, A FIN DE RECONSTRUIR ALREDEDOR DE UN 5-7 % DE REGISTROS
+            # DEFICIENTES.
 
-                driver.get(link)
+            driver.get(link)
 
-                # <<<<<<<<<<<<<<<<<<<<<<<<<     EXTRACCION DETALLE DE PROPIEDADES     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            # <<<<<<<<<<<<<<<<<<<<<<<<<     EXTRACCION DETALLE DE PROPIEDADES     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-                # DETALLE UBICACION INMUEBLE:
+            # DETALLE UBICACION INMUEBLE:
 
-                ubicacion = driver.find_element(By.XPATH, '//h1').text
-                provincia = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][1]').text
-                ciudad = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][2]').text
-                cp = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][3]').text
+            ubicacion = driver.find_element(By.XPATH, '//h1').text
+            provincia = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][1]').text
+            ciudad = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][2]').text
+            cp = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][3]').text
 
-                # VALORACION INMUEBLE:
+            # VALORACION INMUEBLE:
 
-                precio = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][4]').text
-                precio1 = driver.find_element(By.XPATH, '//span[@class="immobilePrezzo"]').text
+            precio = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][4]').text
+            precio1 = driver.find_element(By.XPATH, '//span[@class="immobilePrezzo"]').text
 
-                # SUPERFICIE Y DORMITORIOS.
+            # SUPERFICIE Y DORMITORIOS.
 
-                superficie = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][6]').text
-                dormitorios= driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][7]').text
+            superficie = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][6]').text
+            dormitorios= driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][7]').text
 
-                # CLASIFICACION Y ANTIGUEDAD.
+            # CLASIFICACION Y ANTIGUEDAD.
 
-                subtipologia= driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][8]').text
-                anho = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][9]').text
-                categoria = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][10]').text
+            subtipologia= driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][8]').text
+            anho = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][9]').text
+            categoria = driver.find_element(By.XPATH, '//div[@class="col-md-6 col-sm-12 col-xs-12"][10]').text
 
-                # <<<<<<<<<<<<<<<<<<<<<<<<<   FIN EXTRACCION DETALLE DE PROPIEDADES     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            # <<<<<<<<<<<<<<<<<<<<<<<<<   FIN EXTRACCION DETALLE DE PROPIEDADES     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-                # <<<<<<<<<<<<<<<<<<<<<<<<<       PREPROCESADO  DE PROPIEDADES          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            # <<<<<<<<<<<<<<<<<<<<<<<<<       PREPROCESADO  DE PROPIEDADES          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-                ubicacion = (ubicacion.replace('\n', '').replace('\t', '').replace(':', '')
-                             .replace(',',';').replace('Piso en venta en','').strip())
+            ubicacion = (ubicacion.replace('\n', '').replace('\t', '').replace(':', '')
+                         .replace(',',';').replace('Piso en venta en','').strip())
 
-                provincia = (provincia.replace('\n', '').replace('\t', '').replace(':', '')
-                             .replace('Provincia', '').strip())
+            provincia = (provincia.replace('\n', '').replace('\t', '').replace(':', '')
+                         .replace('Provincia', '').strip())
 
-                ciudad = (ciudad.replace('\n', '').replace('\t', '').replace(':', '')
-                          .replace(',', ';').replace('Ciudad','').strip())
+            ciudad = (ciudad.replace('\n', '').replace('\t', '').replace(':', '')
+                      .replace(',', ';').replace('Ciudad','').strip())
 
-                cp = (cp.replace('\n', '').replace('\t', '').replace(':', '').replace(',', ';')
-                      .replace('C.P.', '').strip())
+            cp = (cp.replace('\n', '').replace('\t', '').replace(':', '').replace(',', ';')
+                  .replace('C.P.', '').strip())
 
-                precio = (precio.replace('\n', '').replace('\t', '').replace('Precio','').replace('€','')
-                          .replace(':', '').replace('C.P.','').strip())
+            precio = (precio.replace('\n', '').replace('\t', '').replace('Precio','').replace('€','')
+                      .replace(':', '').replace('C.P.','').strip())
 
-                precio1 = (precio1.replace('\n', '').replace('\t', '').replace(':', '').replace('€','').strip())
+            precio1 = (precio1.replace('\n', '').replace('\t', '').replace(':', '').replace('€','').strip())
 
-                superficie = (superficie.replace('\n', '').replace('\t', '').replace(':', '').replace(',', ';')
-                              .replace('Superficie', '').replace('construidos', '')
-                              .replace('Tipologia Piso','').replace('m2', '').strip())
+            superficie = (superficie.replace('\n', '').replace('\t', '').replace(':', '').replace(',', ';')
+                          .replace('Superficie', '').replace('construidos', '')
+                          .replace('Tipologia Piso','').replace('m2', '').strip())
 
-                dormitorios = (dormitorios.replace('\n', '').replace('\t', '').replace(':', '').replace(',',';')
-                             .replace('Tipologia','').replace('Dormitorios','').replace('Superficie', '')
-                             .replace('construidos', '').replace('m2', '').strip())
+            dormitorios = (dormitorios.replace('\n', '').replace('\t', '').replace(':', '').replace(',',';')
+                         .replace('Tipologia','').replace('Dormitorios','').replace('Superficie', '')
+                         .replace('construidos', '').replace('m2', '').strip())
 
-                subtipologia = (subtipologia.replace('\n', '').replace('\t', '').replace(':', '').replace(',',';')
-                                .replace('Subtipología','').strip())
+            subtipologia = (subtipologia.replace('\n', '').replace('\t', '').replace(':', '').replace(',',';')
+                            .replace('Subtipología','').strip())
 
-                anho = (anho.replace('\n', '').replace('\t', '').replace(':', '').replace(',',';')
-                            .replace('Año de construcción','').replace('Subtipología','')
-                            .replace('dormitorios','').replace('dormitorio','').strip())
+            anho = (anho.replace('\n', '').replace('\t', '').replace(':', '').replace(',',';')
+                        .replace('Año de construcción','').replace('Subtipología','')
+                        .replace('dormitorios','').replace('dormitorio','').strip())
 
-                categoria = (categoria.replace('\n', '').replace('\t', '').replace(':', '').replace(',',';')
-                             .replace('Categoría','').replace('Año de construcción','').strip())
+            categoria = (categoria.replace('\n', '').replace('\t', '').replace(':', '').replace(',',';')
+                         .replace('Categoría','').replace('Año de construcción','').strip())
 
-                # <<<<<<<<<<<<<<<<<<<<<<<<<    FIN  PREPROCESADO  DE PROPIEDADES        >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            # <<<<<<<<<<<<<<<<<<<<<<<<<    FIN  PREPROCESADO  DE PROPIEDADES        >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-                # ALMACENAMIENTO DE LA EXTRACCION MEDIANTE DICCIONARIO QUE ALBERGA CADA REGISTRO/PROPIEDAD
-                # LA TOTALIDAD DE LOS REGITROS FORMAN UN DATAFRAME PANDA QUE SE ALMACENA EN UN CSV
+            # ALMACENAMIENTO DE LA EXTRACCION MEDIANTE DICCIONARIO QUE ALBERGA CADA REGISTRO/PROPIEDAD
+            # LA TOTALIDAD DE LOS REGITROS FORMAN UN DATAFRAME PANDA QUE SE ALMACENA EN UN CSV
 
-                # 1.- DICCIONARIO
+            # 1.- DICCIONARIO
 
-                Table_dict = {"UBICACION": ubicacion, "PROVINCIA": provincia,"CIUDAD":ciudad,
-                              "PRECIO": precio, "PRECIO1": precio1, "CP":cp,"SUPERFICIE": superficie,
-                              "DORMITORIOS":dormitorios, "SUBTIPOLOGIA":subtipologia,
-                              "AÑO CONST":anho, "CATEGORIA":categoria }
+            Table_dict = {"UBICACION": ubicacion, "PROVINCIA": provincia,"CIUDAD":ciudad,
+                          "PRECIO": precio, "PRECIO1": precio1, "CP":cp,"SUPERFICIE": superficie,
+                          "DORMITORIOS":dormitorios, "SUBTIPOLOGIA":subtipologia,
+                          "AÑO CONST":anho, "CATEGORIA":categoria }
 
-                # 2.- CARGA A DATAFRAME
+            # 2.- CARGA A DATAFRAME
 
-                templist.append(Table_dict)
-                df = pd.DataFrame(templist)
+            templist.append(Table_dict)
+            df = pd.DataFrame(templist)
 
-                # NOTA => CONTROL VISUAL POR CONSOLA DEL FLUJO DE EXTRACCION
-                print("=======================")
-                print("<<<      INICIO     >>>")
-                print("=======================")
-                print("\n")
-                print(ubicacion)
-                print(provincia)
-                print(ciudad)
-                print(precio)
-                print(precio1)
-                print(cp)
-                print(superficie)
-                print(dormitorios)
-                print(subtipologia)
-                print(anho)
-                print(categoria)
-                print("\n")
-                print("<<<<      FIN     >>>>>>")
-                print("\n\n")
-            except Exception as e:
-                print(e)
+            # NOTA => CONTROL VISUAL POR CONSOLA DEL FLUJO DE EXTRACCION
+            print("=======================")
+            print("<<<      INICIO     >>>")
+            print("=======================")
+            print("\n")
+            print(ubicacion)
+            print(provincia)
+            print(ciudad)
+            print(precio)
+            print(precio1)
+            print(cp)
+            print(superficie)
+            print(dormitorios)
+            print(subtipologia)
+            print(anho)
+            print(categoria)
+            print("\n")
+            print("<<<<      FIN     >>>>>>")
+            print("\n\n")
+        except Exception as e:
+            print(e)
 
-                # MECANISMO DE CONTROL = EN CASO DE ERROR EN LA EXTRACCION DE UN ARTICULO /PROPIEDAS, RETORNA
-                # AUTOMATICAMENTE A LA PAGINA QUE SE ESTE PARSEANDO Y CONTINUA CON EL SIGUIENTE ELEMENTO.
+            # MECANISMO DE CONTROL = EN CASO DE ERROR EN LA EXTRACCION DE UN ARTICULO /PROPIEDAS, RETORNA
+            # AUTOMATICAMENTE A LA PAGINA QUE SE ESTE PARSEANDO Y CONTINUA CON EL SIGUIENTE ELEMENTO.
 
-                driver.back()
+            driver.back()
 
 # ENVIO DEL DATAFRAME A UN ARCHIVO CSV Y CIERRE DEL SCRIPT.
 
